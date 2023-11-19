@@ -1,0 +1,36 @@
+---
+- name: Ipset package installation
+  apt:
+    name: "ipset"
+    state: present
+    update_cache: true
+    cache_valid_time: 86400
+
+- name: Create ipset list
+  template:
+    src: ipset.j2
+    dest: "{{ whitelist_ipset_config_file }}"
+  become: true
+
+- name: custom.firewall-restore script
+  template:
+    src: custom.firewall-restore.j2
+    dest: "{{ whitelist_custom_firewall_restore_path }}"
+    mode: 0700
+
+- name: systemd service
+  template:
+    src: custom-firewall.service.j2
+    dest: "{{ whitelist_custom_firewall_service_path }}"
+  register: firewall_service
+
+- name: Systemd service enable
+  when: firewall_service.changed
+  systemd:
+    name: custom-firewall
+    enabled: yes
+    daemon_reload: yes
+
+- name: Apply firewall rules
+  when: firewall_service.changed
+  shell: "{{ whitelist_custom_firewall_restore_path }}"

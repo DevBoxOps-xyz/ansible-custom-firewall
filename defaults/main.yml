@@ -1,0 +1,10 @@
+---
+whitelist_ip4: []
+whitelist_ip6: []
+whitelist_ip4_name: "whitelist"
+whitelist_ip6_name: "whitelist6"
+whitelist_public_port: [80,443]
+whitelist_ipset_config_file: "/etc/network/ipset.list"
+whitelist_ssh_port: 22
+whitelist_custom_firewall_restore_path: "/usr/local/sbin/custom.firewall-restore"
+whitelist_custom_firewall_service_path: "/etc/systemd/system/custom-firewall.service"

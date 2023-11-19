@@ -1,0 +1,15 @@
+{{ ansible_managed | comment }}
+
+[Unit]
+Description=A oneshot service to load iptables rules
+Requires=docker.service
+After=docker.service
+BindsTo=docker.service
+
+[Service]
+Type=oneshot
+ExecStart={{ whitelist_custom_firewall_restore_path }}
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

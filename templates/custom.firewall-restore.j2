@@ -1,0 +1,23 @@
+#!/bin/bash
+
+{{ ansible_managed | comment }}
+
+ipset restore -! < {{ whitelist_ipset_config_file }}
+
+# IP4
+
+iptables -N f2b-sshd
+iptables -I INPUT 1 -p tcp -m multiport --dports {{ whitelist_public_port|join(',') }} -j ACCEPT
+iptables -I INPUT 2 -p tcp -m multiport ! --dports {{ whitelist_public_port|join(',') }}  -m set --match-set {{ whitelist_ip4_name }} src -j ACCEPT
+iptables -I INPUT 3 -p tcp -m multiport ! --dports {{ whitelist_public_port|join(',') }}  -j DROP
+iptables -I INPUT 4 -p tcp -m multiport --dports {{ whitelist_ssh_port }} -j f2b-sshd
+iptables -A f2b-sshd -j RETURN
+
+# IP6
+
+ip6tables -N f2b-sshd
+ip6tables -I INPUT 1 -p tcp -m multiport --dports {{ whitelist_public_port|join(',') }} -j ACCEPT
+ip6tables -I INPUT 2 -p tcp -m multiport ! --dports {{ whitelist_public_port|join(',') }}  -m set --match-set {{ whitelist_ip6_name }} src -j ACCEPT
+ip6tables -I INPUT 3 -p tcp -m multiport ! --dports {{ whitelist_public_port|join(',') }}  -j DROP
+ip6tables -I INPUT 4 -p tcp -m multiport --dports {{ whitelist_ssh_port }} -j f2b-sshd
+ip6tables -A f2b-sshd -j RETURN

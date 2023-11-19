@@ -1,0 +1,11 @@
+flush
+create {{ whitelist_ip4_name }} hash:net maxelem 65536
+{% for white_ip4 in whitelist_ip %}
+add {{ whitelist_ip4_name }} {{ white_ip4 }}
+{% endfor %}
+create {{ whitelist_ip6_name }} hash:ip family inet6
+{% for white_ip6 in whitelist_ip6 %}
+add {{ whitelist_ip6_name }} {{ white_ip6 }}
+{% endfor %}
+
+{{ ansible_managed | comment }}
