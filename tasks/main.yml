@@ -11,6 +11,11 @@
     src: ipset.j2
     dest: "{{ whitelist_ipset_config_file }}"
   become: true
+  register: ipset_list
+
+- name: Apply ipset list
+  shell: "ipset restore -! < {{ whitelist_ipset_config_file }}"
+  when: ipset_list.changed
 
 - name: custom.firewall-restore script
   template:
