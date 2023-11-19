@@ -3,7 +3,7 @@ whitelist_ip4: []
 whitelist_ip6: []
 whitelist_ip4_name: "whitelist"
 whitelist_ip6_name: "whitelist6"
-whitelist_public_port: 
+whitelist_public_port:
   - 80
   - 443
 whitelist_ipset_config_file: "/etc/network/ipset.list"
