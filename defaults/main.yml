@@ -1,6 +1,7 @@
 ---
 whitelist_ip4: []
 whitelist_ip6: []
+whitelist_interface: "eth0"
 whitelist_ip4_name: "whitelist"
 whitelist_ip6_name: "whitelist6"
 whitelist_public_port:
